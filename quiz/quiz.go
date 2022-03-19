@@ -8,6 +8,7 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -16,12 +17,7 @@ func main() {
 	filenamePtr := flag.String("filename", "addition_problems.csv", "a CSV file with the format `question,answer`")
 	flag.Parse()
 
-	file, err := os.Open(*filenamePtr)
-	if err != nil {
-		exit(fmt.Sprintf("Failed to open the CSV file: %s", *filenamePtr))
-	}
-	r := csv.NewReader(file)
-	lines, err := r.ReadAll()
+	lines, err := openAndReadCsv(*filenamePtr)
 	if err != nil {
 		exit(fmt.Sprintf("Failed to parse the CSV file: %s", *filenamePtr))
 	}
@@ -37,6 +33,19 @@ func main() {
 		}
 	}
 	fmt.Printf("You scored %d out of %d\n", correct, len(problems))
+}
+
+func openAndReadCsv(filename string) ([][]string, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		exit(fmt.Sprintf("Failed to open the CSV file: %s", filename))
+	}
+	return readCsvFile(file)
+}
+
+func readCsvFile(reader io.Reader) ([][]string, error) {
+	r := csv.NewReader(reader)
+	return r.ReadAll()
 }
 
 func parseLines(lines [][]string) []problem {
