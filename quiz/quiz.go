@@ -11,10 +11,12 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
 	filenamePtr := flag.String("filename", "addition_problems.csv", "a CSV file with the format `question,answer`")
+	timeLimit := flag.Int("limit", 30, "the time limit for the quiz in seconds")
 	flag.Parse()
 
 	lines, err := openAndReadCsv(*filenamePtr)
@@ -22,16 +24,31 @@ func main() {
 		exit(fmt.Sprintf("Failed to parse the CSV file: %s", *filenamePtr))
 	}
 	problems := parseLines(lines)
+
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
+
 	correct := 0
 	for i, p := range problems {
-		fmt.Printf("Problem #%d: %s = \n", i+1, p.question)
-		var answer string
-		// Scanf will trim any whitespace from the answer
-		fmt.Scanf("%s\n", &answer)
-		if answer == p.answer {
-			correct++
+		fmt.Printf("Problem #%d: %s = ", i+1, p.question)
+		answerChannel := make(chan string)
+		go func() {
+			var answer string
+			// Scanf will trim any whitespace from the answer
+			fmt.Scanf("%s\n", &answer)
+			answerChannel <- answer // Points towards where the data is moving
+		}()
+		select {
+		case <-timer.C:
+			fmt.Printf("\nYou scored %d out of %d.\n", correct, len(problems))
+			return
+		case answer := <-answerChannel:
+			if answer == p.answer {
+				correct++
+			}
 		}
+
 	}
+	// Completed all the problems in the allotted time
 	fmt.Printf("You scored %d out of %d\n", correct, len(problems))
 }
 
