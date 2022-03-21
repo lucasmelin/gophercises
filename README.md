@@ -7,3 +7,4 @@ This repo contains my solutions to the [Gophercises](https://gophercises.com/) b
 |Gophercise|Description|
 |----------|-----------|
 |[Quiz](./quiz)|Run timed quizes via the command line.|
+|[Url Shortener](./urlshort)|An http.Handler that forwards paths to other URLs.|
