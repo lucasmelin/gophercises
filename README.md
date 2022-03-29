@@ -2,6 +2,8 @@
 
 This repo contains my solutions to the [Gophercises](https://gophercises.com/) by Jon Calhoun.
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/lucasmelin/gophercises)](https://goreportcard.com/report/github.com/lucasmelin/gophercises)
+
 ## Content
 
 |Gophercise|Description|
