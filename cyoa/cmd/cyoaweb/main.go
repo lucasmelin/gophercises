@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -18,10 +17,9 @@ func main() {
 	if err != nil {
 		exit(fmt.Sprintf("Failed to open the story file: %s", *filenamePtr))
 	}
-	decoder := json.NewDecoder(file)
-	var story cyoa.Story
-	if err := decoder.Decode(&story); err != nil {
-		exit(fmt.Sprintf("Failed to parse the story file: %s", *filenamePtr))
+	story, err := cyoa.JsonStory(file)
+	if err != nil {
+		exit(fmt.Sprintf("Failed to parse the story: %s", *filenamePtr))
 	}
 	fmt.Printf("%+v\n", story)
 }
