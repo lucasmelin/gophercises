@@ -11,7 +11,7 @@ func main() {
 	mux := defaultMux()
 
 	pathsToUrls := map[string]string{
-		"/urlshort-godoc": "https://godoc.org/github.com/gophercises/urlshort",
+		"/urlshort-godoc": "https://pkg.go.dev/github.com/lucasmelin/gophercises/urlshort",
 		"/yaml-godoc":     "https://godoc.org/gopkg.in/yaml.v2",
 	}
 
@@ -20,7 +20,7 @@ func main() {
 	// YAML requires spaces for indentation
 	yaml := `
     - path: /urlshort
-      url: https://github.com/lucasmelin/gophercises/urlshort
+      url: https://github.com/lucasmelin/gophercises/tree/main/urlshort
     `
 
 	yamlHandler, err := urlshort.YAMLHandler([]byte(yaml), mapHandler)
