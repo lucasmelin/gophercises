@@ -24,7 +24,7 @@ func main() {
 	if err != nil {
 		exit(fmt.Sprintf("Failed to parse the story: %s", *filenamePtr))
 	}
-	handler := cyoa.NewHandler(story)
+	handler := cyoa.NewHandler(story, nil)
 	fmt.Printf("Starting the server on port %d\n", *port)
 	// This will log if the server returns a value, which shouldn't normally happen
 	// since the server should run indefinitely
