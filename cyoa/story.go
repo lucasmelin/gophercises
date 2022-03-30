@@ -71,11 +71,25 @@ var defaultHandlerTemplate = `
   </body>
 </html>`
 
-func NewHandler(story Story, t *template.Template) http.Handler {
-	if t == nil {
-		t = template.Must(template.New("").Parse(defaultHandlerTemplate))
+type HandlerOption func(h *handler)
+
+// https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis
+// Functional options - customization is performed with functions that
+// operate on the handler itself
+func WithTemplate(t *template.Template) HandlerOption {
+	return func(h *handler) {
+		h.t = t
 	}
-	return handler{story, t}
+}
+
+func NewHandler(story Story, options ...HandlerOption) http.Handler {
+	t := template.Must(template.New("").Parse(defaultHandlerTemplate))
+	h := handler{story, t}
+	// Apply functional options
+	for _, opt := range options {
+		opt(&h)
+	}
+	return h
 }
 
 type handler struct {
@@ -90,8 +104,7 @@ func (h handler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	}
 	path = strings.TrimPrefix(path, "/")
 	if chapter, ok := h.story[path]; ok {
-		tpl := template.Must(template.New("").Parse(defaultHandlerTemplate))
-		err := tpl.Execute(writer, chapter)
+		err := h.t.Execute(writer, chapter)
 		if err != nil {
 			log.Printf("Failed to render the template: %v", err)
 			http.Error(writer, "Something went wrong", http.StatusInternalServerError)
