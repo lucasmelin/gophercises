@@ -6,7 +6,8 @@ This repo contains my solutions to the [Gophercises](https://gophercises.com/) b
 
 ## Content
 
-|Gophercise|Description|
-|----------|-----------|
-|[Quiz](./quiz)|Run timed quizes via the command line.|
-|[Url Shortener](./urlshort)|An http.Handler that forwards paths to other URLs.|
+| Gophercise                          | Description                                                                           |
+| ----------------------------------- | ------------------------------------------------------------------------------------- |
+| [Quiz](./quiz)                      | Run timed quizes via the command line.                                                |
+| [Url Shortener](./urlshort)         | An http.Handler that forwards paths to other URLs.                                    |
+| [Choose Your Own Adventure](./cyoa) | A Choose Your Own Adventure book renderer that shows the story via a web application. |
