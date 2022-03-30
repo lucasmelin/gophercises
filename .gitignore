@@ -17,6 +17,12 @@
 !README.md
 !LICENSE
 
+# Default story for cyoa
+!gopher.json
+
+# Default problems for quiz
+!addition_problems.csv
+
 # !Makefile
 
 # ...even if they are in subdirectories
